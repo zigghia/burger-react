@@ -7,7 +7,7 @@
 	background-color: #703B09;
 	display: flex;
 	justify-content: space-between;
-	padding: 0;
+	padding: 0 16px;
 	box-sizing: border-box;
 	z-index: 90;
 	align-items: center;
@@ -19,4 +19,10 @@
 
 .Logo {
 	height: 80%;
+}
+
+@media (max-width: 499px) {
+	.DesktopOnly {
+		display: none;
+	}
 }

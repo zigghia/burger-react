@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classes from './Modal.module.css';
 import Wrapper from "../Wrapper";
 import Backdrop from "../Backdrop/Backdrop";
 
 const Modal = (props) => {
+
+	useEffect(() => {
+	}, [props.show]);
+
+	console.log('rendering');
 	return (
 		<Wrapper>
 			<Backdrop show={props.show} clicked = {props.showModal}></Backdrop>
@@ -19,4 +24,4 @@ const Modal = (props) => {
 	);
 }
 
-export default Modal;
+export default React.memo(Modal);
