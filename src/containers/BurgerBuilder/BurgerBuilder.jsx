@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Wrapper from "../../shared/Wrapper";
+import Modal from "../../shared/Modal/Modal";
+import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 
 const INGREDIENT_PRICES = {
 	bacon: 1,
@@ -19,11 +21,17 @@ class BurgerBuilder extends Component {
 			cheese: 0,
 			meat: 0
 		},
-		totalPrice: 4
+		totalPrice: 4,
+		purchasable: false,
+		showModal: false
 	}
 
-	addIngredient(type: string) {
-	}
+	updatePurchasbleState(ingredients) {
+		if (!ingredients) {
+			return false;
+		}
+		return Object.entries(ingredients).map(el => el[1]).reduce((acc, el) => acc += el, 0) > 0;
+	};
 
 	actionIngredient(type: string, isAdd = true) {
 		const ingredients = {...this.state.ingredients};
@@ -43,17 +51,47 @@ class BurgerBuilder extends Component {
 			newPrice = this.state.totalPrice - cost;
 		}
 
-		this.setState({ingredients: ingredients, totalPrice: newPrice});
+
+		this.setState((prev, current) => {
+			return {
+				ingredients: ingredients,
+				totalPrice: newPrice,
+				purchasable: this.updatePurchasbleState(ingredients)
+			}
+		});
 
 	}
+
+	showModalHandler() {
+		this.setState({showModal: true})
+	}
+
+	cancelModallHandler() {
+		this.setState({showModal: false});
+	}
+
+	continueOrder() {
+		alert('This order is set');
+	}
+
 	render() {
 		return (<Wrapper>
+			<Modal show={this.state.showModal} showModal={this.cancelModallHandler.bind(this)}>
+				<OrderSummary
+					totalPrice = {this.state.totalPrice}
+					cancel = {this.cancelModallHandler.bind(this)}
+					continue = {this.continueOrder}
+					ingredients = {this.state.ingredients}>
+				</OrderSummary>
+			</Modal>
 			<Burger ingredients={this.state.ingredients}/>
 			<div>
 				<BuildControls
-					totalPrice = {this.state.totalPrice}
-					ingredients = {this.state.ingredients}
+					purchasable={this.state.purchasable}
+					totalPrice={this.state.totalPrice}
+					ingredients={this.state.ingredients}
 					onAdd={this.actionIngredient.bind(this)}
+					showModal={this.showModalHandler.bind(this)}
 					onRemove={(type) => this.actionIngredient(type, false)}/>
 			</div>
 		</Wrapper>);
