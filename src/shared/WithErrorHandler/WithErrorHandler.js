@@ -14,12 +14,12 @@ const WithErrorHandler = (WrappedComponent, axios) => {
 		}
 
 		componentDidMount() {
-			axios.interceptors.response.use(res => {
+			this.a = axios.interceptors.response.use(res => {
 				this.setState({error: null});
 				return res
 			}, null);
 
-			axios.interceptors.response.use(res => res, error => {
+			this.b = axios.interceptors.response.use(res => res, error => {
 				console.log(error.message);
 				this.setState({error: error.message});
 				console.log('after', this.state)

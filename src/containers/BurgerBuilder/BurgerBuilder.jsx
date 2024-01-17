@@ -15,9 +15,7 @@ const INGREDIENT_PRICES = {
 class BurgerBuilder extends Component {
 
 	state = {
-		ingredients: {
-			salad: 0, bacon: 0, cheese: 0, meat: 0
-		}, totalPrice: 4, purchasable: false, showModal: false, loading: false
+		ingredients: {}, totalPrice: 4, purchasable: false, showModal: false, loading: false
 	}
 
 	updatePurchasbleState(ingredients) {
@@ -72,7 +70,7 @@ class BurgerBuilder extends Component {
 			}
 		}
 
-		axios.post('/orders', newOrder)
+		axios.post('/ordersjson', newOrder)
 			.then((data) => {
 				this.setState({loading: false, showModal: false});
 			})
@@ -81,6 +79,12 @@ class BurgerBuilder extends Component {
 			})
 	}
 
+	componentDidMount() {
+		axios.get('ingredients.json')
+			.then(resp => {
+				this.setState({ingredients: resp.data});
+			});
+	}
 
 	render() {
 		let order = <OrderSummary
@@ -94,20 +98,29 @@ class BurgerBuilder extends Component {
 			order = <Spinner/>
 		}
 
+		let burger = <Spinner></Spinner>;
+
+		if (Object.keys(this.state.ingredients).length) {
+
+			burger = <Wrapper>
+				<Burger ingredients={this.state.ingredients}/>
+				<div>
+					<BuildControls
+						purchasable={this.state.purchasable}
+						totalPrice={this.state.totalPrice}
+						ingredients={this.state.ingredients}
+						onAdd={this.actionIngredient.bind(this)}
+						showModal={this.showModalHandler.bind(this)}
+						onRemove={(type) => this.actionIngredient(type, false)}/>
+				</div>
+			</Wrapper>
+		}
+
 		return (<Wrapper>
 			<Modal show={this.state.showModal} showModal={this.cancelModallHandler.bind(this)}>
 				{order}
 			</Modal>
-			<Burger ingredients={this.state.ingredients}/>
-			<div>
-				<BuildControls
-					purchasable={this.state.purchasable}
-					totalPrice={this.state.totalPrice}
-					ingredients={this.state.ingredients}
-					onAdd={this.actionIngredient.bind(this)}
-					showModal={this.showModalHandler.bind(this)}
-					onRemove={(type) => this.actionIngredient(type, false)}/>
-			</div>
+			{burger}
 		</Wrapper>);
 	}
 }
