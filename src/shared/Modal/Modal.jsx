@@ -8,7 +8,6 @@ const Modal = (props) => {
 	useEffect(() => {
 	}, [props.show]);
 
-	console.log('rendering');
 	return (
 		<Wrapper>
 			<Backdrop show={props.show} clicked = {props.showModal}></Backdrop>

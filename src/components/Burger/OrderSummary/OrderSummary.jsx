@@ -5,7 +5,6 @@ import Button from "../../Button/Button";
 class OrderSummary extends Component {
 
 	componentDidUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any) {
-		console.log('summary will update');
 	}
 
 	summary = Object.keys(this.props.ingredients)
