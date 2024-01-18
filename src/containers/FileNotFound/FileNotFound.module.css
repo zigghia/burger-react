@@ -1,0 +1,14 @@
+.f404 {
+	width: 100%;
+	height: 100vh;
+	display: block;
+	margin: 0;
+	padding: 35px;
+	font-size: 180px;
+	font-weight: bold;
+	align-items: center;
+	text-align: center;
+	background-color: #40a4c8;
+	color: black;
+	vertical-align: center;
+}

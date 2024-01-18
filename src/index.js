@@ -3,11 +3,37 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { createBrowserRouter } from "react-router-dom";
+import { RouterProvider } from "react-router";
+import Layout from "./containers/Layout/Layout";
+import BurgerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
+import FileNotFound from "./containers/FileNotFound/FileNotFound";
+import Checkout from "./containers/Checkout/Checkout";
+
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <Layout/>,
+        errorElement: <FileNotFound />,
+        children: [
+            {
+                path: "/",
+                element: <BurgerBuilder />,
+            },
+            {
+                path: "checkout",
+                element: <Checkout />,
+            },
+        ]
+    }
+
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+      <RouterProvider router={router} />
   </React.StrictMode>
 );
 

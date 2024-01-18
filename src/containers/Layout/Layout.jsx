@@ -3,6 +3,7 @@ import style from "./Layout.module.css";
 import Wrapper from "../../shared/Wrapper";
 import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
+import { Outlet } from "react-router-dom";
 
 class Layout extends Component {
 
@@ -26,7 +27,7 @@ class Layout extends Component {
 			<Toolbar drawerToggleClicked={this.sideDrawerToggleHandler}/>
 
 			<main className={style.Content}>
-				{this.props.children}
+				<Outlet/>
 			</main>
 		</Wrapper>
 	}
